@@ -66,4 +66,4 @@ CMD /bin/bash
 # but is not automatically removed.
 #
 # SRC=/usr/src/lyx  # Destination of bind-mounted $WORKSPACE in the container
-# docker run -v $WORKSPACE:$SRC  $CONTAINER  build_lyx.sh $SRC
+# docker run -v $WORKSPACE:$SRC  $CONTAINER  /usr/src/build_lyx.sh $SRC

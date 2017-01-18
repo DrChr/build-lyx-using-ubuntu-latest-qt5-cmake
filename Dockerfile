@@ -64,6 +64,5 @@ CMD /bin/bash
 # - Make the container execute the script 'build_lyx.sh' that builds LyX
 # Note: Once the build script is done, it exits and the container stops
 # but is not automatically removed.
-#
-# SRC=/usr/src/lyx  # Destination of bind-mounted $WORKSPACE in the container
-# docker run -v $WORKSPACE:$SRC  $CONTAINER  /usr/src/build_lyx.sh $SRC
+#	SRC=/usr/src/lyx  # Destination of bind-mounted $WORKSPACE in the container
+#	docker run -v $WORKSPACE:$SRC  $CONTAINER  /usr/src/build_lyx.sh $SRC

@@ -1,11 +1,14 @@
-# Docker image to build LyX
+# Docker image to build LyX using:
+# - Ubuntu <version: tagged 'latest'>
+# - Qt5
+# - CMake
 #
 # This Dockerfile is used to build a Docker image containing a set of
 # tools and libraries that can be used to build LyX from source.
 #
-# The Docker image is intended to be deployed on a continuous
-# integration (CI) worker, a.k.a CI node or slave. See the end of
-# this file for further details.
+# The Docker image is primarily intended to be deployed on a
+# continuous integration (CI) worker, a.k.a CI node or slave. See the
+# end of this file for further details.
 #
 FROM ubuntu:latest
 MAINTAINER Christian Ridderström <chr@lyx.org>

@@ -13,23 +13,20 @@
 FROM ubuntu:latest
 MAINTAINER Christian Ridderström <chr@lyx.org>
 
-# Install tools and libraries needed to build LyX
-RUN apt-get update						\
-        && DEBIAN_FRONTEND=noninteractive apt-get install -y	\
-                build-essential					\
-		qt5-default					\
-                qtbase5-dev					\
-		libqt5svg5-dev					\
-		python						\
-		cmake						\
-        && rm -rf /var/lib/apt/lists/*
+# Avoid warnings during certain invocations to apt-get install <x>
+ENV DEBIAN_FRONTEND noninteractive
 
-# Add script that'll be run in the container to build LyX
-ADD ./build_lyx.sh /usr/src
+# Add, run and then remove the script that installs packages.
+ADD install_dependencies.sh install_dependencies.sh
+RUN  bash install_dependencies.sh && rm install_dependencies.sh
+
+# Copy scripts etc in ./build to /build in the container, e.g. to be
+# used in the container to build LyX
+ADD ./build /build
 
 # Set default starting direcory and command for the container.
 # Mainly useful for interactive troubleshooting.
-WORKDIR /usr/src
+WORKDIR /build
 CMD /bin/bash
 
 #
@@ -53,19 +50,18 @@ CMD /bin/bash
 #
 # For troubleshooting the containerr, it's useful to start it in
 # interactive mode with a working terminal as follows:
-#	docker run -i -t  $CONTAINER /bin/bash
+#	docker run -i -t  $IMAGE /bin/bash
 #
 # The rows below are suitable for the command section of CI job
 # (uncomment the last two rows):
 # ----------------------------------------------------------------------
 #
-# With the source repository cloned to a folder $WORKSPACE, and
-# $CONTAINER set to the name of the Docker image, the following
-# commands will:
-# - Start a Docker container (process), with $WORKSPACE bind-mounted
-#   to $SRC in the container, and
+# With the source repository cloned to a folder $WORKSPACE, and $IMAGE
+# set to the name of this Docker image, the following commands will:
+# - Start a Docker container (process) based on this image with folder
+#   $WORKSPACE bind-mounted to $SRC in the container
 # - Make the container execute the script 'build_lyx.sh' that builds LyX
-# Note: Once the build script is done, it exits and the container stops
-# but is not automatically removed.
-#	SRC=/usr/src/lyx  # Destination of bind-mounted $WORKSPACE in the container
-#	docker run -v $WORKSPACE:$SRC  $CONTAINER  /usr/src/build_lyx.sh $SRC
+# Note: Once the build script is done, the script exits and the
+# container stops and is automatically removed.
+#	SRC=/build/lyx  # Dest. of bind-mounted $WORKSPACE in the container
+#	docker run --rm -v $WORKSPACE:$SRC  $IMAGE  /build/build_lyx.sh $SRC

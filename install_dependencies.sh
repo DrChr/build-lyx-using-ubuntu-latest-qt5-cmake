@@ -23,7 +23,7 @@ do_or_fail  apt-get --quiet --assume-yes install \
 		qtbase5-dev			\
 		libqt5svg5-dev			\
 		python				\
-        zlib1g-dev			\
+		zlib1g-dev			\
 		cmake
 
 do_or_fail  rm -rf /var/lib/apt/lists/*
